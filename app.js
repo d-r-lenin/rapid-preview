@@ -14,7 +14,7 @@ RR    RR    PP        IIIIIIII        TT
 rpit --help            -----> show  help
 rpit                   -----> watch current path , open first HTML document, serving in default port
 rpit <file_name>       -----> to specify file to open(default:: first HTML document)
-rpit --port <number>   -----> set port number or change the default port(${PORT})
+rpit --port <number>   -----> set port number or change the default port
 rpit --path <path>     -----> set path to watch(default:: current path)
 rpit --file <file_name>-----> to specify file to open(default:: first HTML document)
 
