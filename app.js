@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+const args = parseArgs();
+const PORT = args.port || 5353;
+
 const help = `
 
 RRR         PPPPP     IIIIIIII    TTTTTTTTTT
@@ -24,6 +27,28 @@ EXAMPLES:
         rpit --path C://Github/myApp --file example.html --port 3000
 `;
 
+const poison = `
+<!-- code injucted by server -->
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io('ws://localhost:${PORT}');
+console.log("hi")
+socket.on("connect", () => {
+    console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+    socket.on('hello',data=>{
+        console.log(data);
+    });
+    socket.on('change',data=>{
+        document.location.reload()
+    })
+  });
+  
+  socket.on("disconnect", () => {
+    console.log(socket.id); // undefined
+  });
+</script>
+`;
+
 const express = require("express");
 const app = express();
 const http = require("http");
@@ -33,10 +58,7 @@ const path = require("path");
 const io = require("socket.io")(httpServer);
 const fs = require("fs");
 const { exit } = require("process");
-
-const args = parseArgs();
-
-const PORT = args.port || 5353;
+let html;
 
 if (args.help) {
   console.log(help);
@@ -74,42 +96,13 @@ if (!args.file) {
   }
 }
 
+
 io.on("connection", (socket) => {
   socket.emit("hello", "hay 😎");
   fs.watch(args.path, { recursive: true }, (e, f) => {
     socket.emit("change", e);
   });
 });
-
-const poison = `
-<!-- code injucted by server -->
-<script src="/socket.io/socket.io.js"></script>
-<script>
-const socket = io('ws://localhost:${PORT}');
-console.log("hi")
-socket.on("connect", () => {
-    console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-    socket.on('hello',data=>{
-        console.log(data);
-    });
-    socket.on('change',data=>{
-        document.location.reload()
-    })
-  });
-  
-  socket.on("disconnect", () => {
-    console.log(socket.id); // undefined
-  });
-</script>
-`;
-
-let html = fs
-  .readFileSync(path.join(args.path, args.file || "index.html"))
-  .toString("utf-8");
-html = injuct(html, poison);
-if (html === undefined) {
-  exit();
-}
 
 app.get("/", (req, res) => {
   html = fs
@@ -127,11 +120,23 @@ app.get("/", (req, res) => {
 
 app.use(express.static(args.path));
 
-process.PORT = PORT;
-httpServer.listen(PORT, () => {
-  console.log(`rpit Server running on : http://localhost:${PORT}`);
-  open(`http://localhost:${PORT}`);
-});
+
+setTimeout(() => {
+  html = fs
+    .readFileSync(path.join(args.path, args.file || "index.html"))
+    .toString("utf-8");
+  html = injuct(html, poison);
+  if (html === undefined) {
+    exit();
+  }
+
+  httpServer.listen(PORT, () => {
+    console.log(`rpit Server running on : http://localhost:${PORT}`);
+    open(`http://localhost:${PORT}`);
+  });
+  
+}, 1000);
+
 
 function parseArgs(argsA) {
   const args = {};
