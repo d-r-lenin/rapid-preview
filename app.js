@@ -10,7 +10,7 @@ RR R        PP           II           TT
 RR  RR      PP           II           TT
 RR    RR    PP        IIIIIIII        TT
 
-
+ 
 rpit --help            -----> show  help
 rpit                   -----> watch current path , open first HTML document, serving in default port
 rpit <file_name>       -----> to specify file to open(default:: first HTML document)
