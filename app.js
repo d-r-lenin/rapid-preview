@@ -38,9 +38,9 @@ const args = parseArgs();
 
 const PORT = args.port || 5353;
 
-if(args.help){
+if (args.help) {
   console.log(help);
-  exit()
+  exit();
 }
 
 if (!args.path) {
@@ -64,18 +64,19 @@ if (!args.file) {
           args.file = d;
         }
       });
-      if(!args.file){
-        console.error("Error:1>2: Can't Find Any Html Document in current PATH. Please Specify --file Property with relative path..");
+      if (!args.file) {
+        console.error(
+          "Error:1>2: Can't Find Any Html Document in current PATH. Please Specify --file Property with relative path.."
+        );
         exit();
       }
     });
   }
 }
 
-
 io.on("connection", (socket) => {
   socket.emit("hello", "hay 😎");
-  fs.watch(args.path, (e, f) => {
+  fs.watch(args.path, { recursive: true }, (e, f) => {
     socket.emit("change", e);
   });
 });
@@ -103,11 +104,11 @@ socket.on("connect", () => {
 `;
 
 let html = fs
-    .readFileSync(path.join(args.path, args.file || "index.html"))
-    .toString("utf-8");
-  html = injuct(html, poison);
-  if(html === undefined){
-    exit();
+  .readFileSync(path.join(args.path, args.file || "index.html"))
+  .toString("utf-8");
+html = injuct(html, poison);
+if (html === undefined) {
+  exit();
 }
 
 app.get("/", (req, res) => {
@@ -115,14 +116,13 @@ app.get("/", (req, res) => {
     .readFileSync(path.join(args.path, args.file || "index.html"))
     .toString("utf-8");
   html = injuct(html, poison);
-  if(html === undefined){
-    res.send('Please Write Proper BODY Tag To Use Rpit...🙃');
+  if (html === undefined) {
+    res.send("Please Write Proper BODY Tag To Use Rpit...🙃");
     exit();
-  }else{
+  } else {
     fs.writeFileSync(path.join(process.env.TMP, "temp.html"), html);
     res.sendFile(path.join(process.env.TMP, "temp.html"));
   }
-
 });
 
 app.use(express.static(args.path));
@@ -140,9 +140,9 @@ function parseArgs(argsA) {
   }
   argsA.forEach((arg, i) => {
     if (arg.slice(0, 2) === "--") {
-      if(arg === '--help'){
+      if (arg === "--help") {
         args[arg.slice(2)] = true;
-      }else if (argsA[i + 1]) {
+      } else if (argsA[i + 1]) {
         args[arg.slice(2)] = argsA[i + 1];
       }
     }
@@ -152,8 +152,8 @@ function parseArgs(argsA) {
 
 function injuct(html, poison) {
   const splited = html.split("</body>");
-  if(splited.length != 2){
-    console.error('Error<b0>: Please Write Proper <body> Tag To Use Rpit..');
+  if (splited.length != 2) {
+    console.error("Error<b0>: Please Write Proper <body> Tag To Use Rpit..");
     return undefined;
   }
   const newHtml = `${splited[0]}
