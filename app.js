@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#! /usr/bin/env node
 
 const args = parseArgs();
 const PORT = args.port || 5353;
