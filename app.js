@@ -1,30 +1,29 @@
 #! /usr/bin/env node
 
 const args = parseArgs();
-const PORT = args.port || 5353;
+const PORT = args.port || 4040;
 
 const help = `
 
-RRR         PPPPP     IIIIIIII    TTTTTTTTTT
-RR RR       PP  PP       II           TT
-RR   RR     PP   PP      II           TT
-RR  RR      PP PP        II           TT
-RR R        PP           II           TT  
-RR  RR      PP           II           TT
-RR    RR    PP        IIIIIIII        TT
+      ██████╗   ██╗  ██╗  ████████╗  ███╗   ███╗  ██╗
+     ██╔═══██╗  ██║  ██║  ╚══██╔══╝  ████╗ ████║  ██║
+     ██║   ██║  ███████║     ██║     ██╔████╔██║  ██║
+     ██║   ██║  ██╔══██║     ██║     ██║╚██╔╝██║  ██║
+     ╚██████╔╝  ██║  ██║     ██║     ██║ ╚═╝ ██║  ███████╗
+      ╚═════╝   ╚═╝  ╚═╝     ╚═╝     ╚═╝     ╚═╝  ╚══════╝
 
 
-rpit --help            -----> show  help
-rpit                   -----> watch current path , open first HTML document, serving in default port
-rpit <file_name>       -----> to specify file to open(default:: first HTML document)
-rpit --port <number>   -----> set port number or change the default port
-rpit --path <path>     -----> set path to watch(default:: current path)
-rpit --file <file_name>-----> to specify file to open(default:: first HTML document)
+ohtml --help            -----> show  help
+ohtml                   -----> watch current path , open first HTML document, serving in default port
+ohtml <file_name>       -----> to specify file to open(default:: first HTML document)
+ohtml --port <number>   -----> set port number or change the default port
+ohtml --path <path>     -----> set path to watch(default:: current path)
+ohtml --file <file_name>-----> to specify file to open(default:: first HTML document)
 
 EXAMPLES:
-'''''''   
-        rpit index.html
-        rpit --path C://Github/myApp --file example.html --port 3000
+'''''''''
+        ohtml index.html
+        ohtml --path C://Github/myApp --file example.html --port 3000
 `;
 
 const poison = `
@@ -42,7 +41,6 @@ socket.on("connect", () => {
         document.location.reload()
     })
   });
-  
   socket.on("disconnect", () => {
     console.log(socket.id); // undefined
   });
@@ -58,6 +56,8 @@ const path = require("path");
 const io = require("socket.io")(httpServer);
 const fs = require("fs");
 const { exit } = require("process");
+const readline = require('readline');
+
 let html;
 
 if (args.help) {
@@ -88,7 +88,7 @@ if (!args.file) {
       });
       if (!args.file) {
         console.error(
-          "Error:1>2: Can't Find Any Html Document in current PATH. Please Specify --file Property with relative path.."
+          "Error:: \n   Can't Find Any Html Document in current PATH.\n\n\t Please Specify --file Property with relative path.."
         );
         exit();
       }
@@ -132,9 +132,11 @@ setTimeout(() => {
 
   httpServer.listen(PORT, () => {
     console.log(`rpit Server running on : http://localhost:${PORT}`);
+    console.log(`type command "exit" anytime to stop`);
+    console.log(`watching path ${args.path || './'}`);
     open(`http://localhost:${PORT}`);
+    ask();
   });
-  
 }, 1000);
 
 
@@ -167,4 +169,22 @@ function injuct(html, poison) {
     ${splited[1]}
     `;
   return newHtml;
+}
+
+
+function ask() {
+  const r1 = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
+  r1.question('', a => {
+    r1.close();
+    if(a === 'end' || a === 'close' || a === 'exit'){
+      process.exit();
+    }
+    if(a === "help"){
+      console.log(help);
+    }
+    ask();
+  })
 }
