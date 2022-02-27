@@ -1,6 +1,6 @@
 {
   "name": "ohtml",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "live Preview for html document",
   "main": "app.js",
   "dependencies": {
