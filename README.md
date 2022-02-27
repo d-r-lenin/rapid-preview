@@ -1,4 +1,4 @@
-># On Live HTML \(ohtml\)
+># O HTML \(ohtml\)
 <hr>
 
 >## <i> Discription </i>
@@ -6,7 +6,7 @@
     margin-left:2em;
     margin-bottom:2rem;
     font-size:1.3rem
-">Live preview for html</div>
+">Ohtml is a CLI tool that provides a live preview for your HTML document while developing websites. It refreshes a webpage whenever there is change in a particular directory.</div>
 
 >## <i>Instalation</i>
 * To install first you need nodejs installed. [click here to downloat node](https://nodejs.org/en/download/)
@@ -15,9 +15,9 @@
 ```
     npm i -g ohtml
 ```
-* Or run npx command directly (not recomended)
+* Or run npx command directly
 ```
-    npx run ohtml
+    npx ohtml
 ```
 >## usage
 * Got to any directory that includes a html file.

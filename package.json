@@ -1,6 +1,6 @@
 {
   "name": "ohtml",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "live Preview for html document",
   "main": "app.js",
   "dependencies": {
@@ -25,5 +25,5 @@
     "type": "git",
     "url": "https://github.com/d-r-lenin/rpit.git"
   },
-  "keywords":["live-preview","html"]
+  "keywords":["live-preview","html","realtime","front-end","ohtml"]
 }

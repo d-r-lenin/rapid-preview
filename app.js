@@ -31,12 +31,8 @@ const poison = `
 <script src="/socket.io/socket.io.js"></script>
 <script>
 const socket = io('ws://localhost:${PORT}');
-console.log("hi")
 socket.on("connect", () => {
-    console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-    socket.on('hello',data=>{
-        console.log(data);
-    });
+    console.log("Socket connect for live preview");
     socket.on('change',data=>{
         document.location.reload()
     })
@@ -98,7 +94,6 @@ if (!args.file) {
 
 
 io.on("connection", (socket) => {
-  socket.emit("hello", "hay 😎");
   fs.watch(args.path, { recursive: true }, (e, f) => {
     socket.emit("change", e);
   });
@@ -110,7 +105,7 @@ app.get("/", (req, res) => {
     .toString("utf-8");
   html = injuct(html, poison);
   if (html === undefined) {
-    res.send("Please Write Proper BODY Tag To Use Rpit...🙃");
+    res.send("Please Write Proper BODY Tag To Use ohtml...🙃");
     exit();
   } else {
     fs.writeFileSync(path.join(process.env.TMP, "temp.html"), html);
@@ -131,7 +126,7 @@ setTimeout(() => {
   }
 
   httpServer.listen(PORT, () => {
-    console.log(`rpit Server running on : http://localhost:${PORT}`);
+    console.log(`ohtml Server running on : http://localhost:${PORT}`);
     console.log(`type command "exit" anytime to stop`);
     console.log(`watching path ${args.path || './'}`);
     open(`http://localhost:${PORT}`);
@@ -160,7 +155,7 @@ function parseArgs(argsA) {
 function injuct(html, poison) {
   const splited = html.split("</body>");
   if (splited.length != 2) {
-    console.error("Error<b0>: Please Write Proper <body> Tag To Use Rpit..");
+    console.error("Error<b0>: Please Write Proper <body> Tag To Use ohtml..");
     return undefined;
   }
   const newHtml = `${splited[0]}
