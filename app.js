@@ -5,25 +5,24 @@ const PORT = args.port || 4040;
 
 const help = `
 
-      ██████╗   ██╗  ██╗  ████████╗  ███╗   ███╗  ██╗
-     ██╔═══██╗  ██║  ██║  ╚══██╔══╝  ████╗ ████║  ██║
-     ██║   ██║  ███████║     ██║     ██╔████╔██║  ██║
-     ██║   ██║  ██╔══██║     ██║     ██║╚██╔╝██║  ██║
-     ╚██████╔╝  ██║  ██║     ██║     ██║ ╚═╝ ██║  ███████╗
-      ╚═════╝   ╚═╝  ╚═╝     ╚═╝     ╚═╝     ╚═╝  ╚══════╝
+
+#   ____    __    ____  ____  ____  ____  ____  ____  _  _  ____  ____  _    _ 
+#  (  _ \  /__\  (  _ \(_  _)(  _ \(  _ \(  _ \( ___)( \/ )(_  _)( ___)( \/\/ )
+#   )   / /(__)\  )___/ _)(_  )(_) ))___/ )   / )__)  \  /  _)(_  )__)  )    ( 
+#  (_)\_)(__)(__)(__)  (____)(____/(__)  (_)\_)(____)  \/  (____)(____)(__/\__)
 
 
-ohtml --help            -----> show  help
-ohtml                   -----> watch current path , open first HTML document, serving in default port
-ohtml <file_name>       -----> to specify file to open(default:: first HTML document)
-ohtml --port <number>   -----> set port number or change the default port
-ohtml --path <path>     -----> set path to watch(default:: current path)
-ohtml --file <file_name>-----> to specify file to open(default:: first HTML document)
+rapidpreview --help            -----> show  help
+rapidpreview                   -----> watch current path , open first HTML document, serving in default port
+rapidpreview <file_name>       -----> to specify file to open(default:: first HTML document)
+rapidpreview --port <number>   -----> set port number or change the default port
+rapidpreview --path <path>     -----> set path to watch(default:: current path)
+rapidpreview --file <file_name>-----> to specify file to open(default:: first HTML document)
 
 EXAMPLES:
 '''''''''
-        ohtml index.html
-        ohtml --path C://Github/myApp --file example.html --port 3000
+        rapidpreview index.html
+        rapidpreview --path C://Github/myApp --file example.html --port 3000
 `;
 
 const poison = `
@@ -105,7 +104,7 @@ app.get("/", (req, res) => {
     .toString("utf-8");
   html = injuct(html, poison);
   if (html === undefined) {
-    res.send("Please Write Proper BODY Tag To Use ohtml...🙃");
+    res.send("Please Write Proper BODY Tag To Use rapidpreview...🙃");
     exit();
   } else {
     fs.writeFileSync(path.join(process.env.TMP, "temp.html"), html);
@@ -126,7 +125,7 @@ setTimeout(() => {
   }
 
   httpServer.listen(PORT, () => {
-    console.log(`ohtml Server running on : http://localhost:${PORT}`);
+    console.log(`rapidpreview Server running on : http://localhost:${PORT}`);
     console.log(`type command "exit" anytime to stop`);
     console.log(`watching path ${args.path || './'}`);
     open(`http://localhost:${PORT}`);
@@ -155,7 +154,7 @@ function parseArgs(argsA) {
 function injuct(html, poison) {
   const splited = html.split("</body>");
   if (splited.length != 2) {
-    console.error("Error<b0>: Please Write Proper <body> Tag To Use ohtml..");
+    console.error("Error<b0>: Please Write Proper <body> Tag To Use rapidpreview..");
     return undefined;
   }
   const newHtml = `${splited[0]}

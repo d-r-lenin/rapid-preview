@@ -1,7 +1,7 @@
 {
-  "name": "ohtml",
-  "version": "1.0.9",
-  "description": "live Preview for html document",
+  "name": "rapid-preview",
+  "version": "1.0.0",
+  "description": "CLI tool to auto reload your HTML file on change.",
   "main": "app.js",
   "dependencies": {
     "express": "^4.17.1",
@@ -10,7 +10,7 @@
     "socket.io": "^4.4.1"
   },
   "bin": {
-    "ohtml": "app.js"
+    "rapidpreview": "app.js"
   },
   "files": [
     "app.js"
@@ -23,13 +23,17 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-r-lenin/rpit.git"
+    "url": "https://github.com/d-r-lenin/rapid-preview.git"
   },
   "keywords": [
     "live-preview",
     "html",
     "realtime",
     "front-end",
-    "ohtml"
+    "ohtml",
+    "rapid-preview",
+    "live-server",
+    "cli",
+    "live"
   ]
 }
