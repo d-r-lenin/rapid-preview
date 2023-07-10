@@ -13,11 +13,11 @@
 
 * Type following command to install
 ```
-    npm i -g rapidpreview
+    npm i -g rapid-preview
 ```
 * Or run npx command directly
 ```
-    npx rapidpreview@latest < arguments,>
+    npx rapid-preview@latest < arguments,>
 ```
 >## usage
 * Got to any directory that includes a html file.
