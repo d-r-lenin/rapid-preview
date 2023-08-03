@@ -107,8 +107,8 @@ app.get("/", (req, res) => {
     res.send("Please Write Proper BODY Tag To Use rapidpreview...🙃");
     exit();
   } else {
-    fs.writeFileSync(path.join(process.env.TMP, "temp.html"), html);
-    res.sendFile(path.join(process.env.TMP, "temp.html"));
+    fs.writeFileSync(path.join(process.env.TMP || process.env.TMPDIR, "temp.html"), html);
+    res.sendFile(path.join(process.env.TMP || process.env.TMPDIR, "temp.html"));
   }
 });
 
