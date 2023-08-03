@@ -54,7 +54,7 @@ const { exit } = require("process");
 const readline = require('readline');
 
 let html;
-
+const tempdir = process.env.TMP || process.env.TMPDIR || "/tmp";
 if (args.help) {
   console.log(help);
   exit();
@@ -107,8 +107,8 @@ app.get("/", (req, res) => {
     res.send("Please Write Proper BODY Tag To Use rapidpreview...🙃");
     exit();
   } else {
-    fs.writeFileSync(path.join(process.env.TMP || process.env.TMPDIR, "temp.html"), html);
-    res.sendFile(path.join(process.env.TMP || process.env.TMPDIR, "temp.html"));
+    fs.writeFileSync(path.join(tempdir, "temp.html"), html);
+    res.sendFile(path.join(tempdir, "temp.html"));
   }
 });
 
