@@ -1,9 +1,10 @@
 {
   "name": "rapid-preview",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "CLI tool to auto reload your HTML file on change.",
   "main": "app.js",
   "dependencies": {
+    "chokidar": "^3.5.3",
     "express": "^4.17.1",
     "open": "^8.2.1",
     "path": "^0.12.7",
@@ -15,7 +16,6 @@
   "files": [
     "app.js"
   ],
-  "devDependencies": {},
   "scripts": {
     "start": "node app.js"
   },
