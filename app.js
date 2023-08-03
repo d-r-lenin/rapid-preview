@@ -48,6 +48,7 @@ const http = require("http");
 const httpServer = http.createServer(app);
 const open = require("open");
 const path = require("path");
+const chokidar = require('chokidar');
 const io = require("socket.io")(httpServer);
 const fs = require("fs");
 const { exit } = require("process");
@@ -93,9 +94,28 @@ if (!args.file) {
 
 
 io.on("connection", (socket) => {
-  fs.watch(args.path, { recursive: true }, (e, f) => {
-    socket.emit("change", e);
+  // fs.watch(args.path, { recursive: true }, (e, f) => {
+  //   socket.emit("change", e);
+  // });
+        const watcher = chokidar.watch(args.path, {
+    persistent: true,
+    ignoreInitial: true,
+    awaitWriteFinish: true,
   });
+
+  watcher
+    .on('add', (filePath) => {
+      socket.emit('change', 'add', filePath);
+    })
+    .on('change', (filePath) => {
+      socket.emit('change', 'change', filePath);
+    })
+    .on('unlink', (filePath) => {
+      socket.emit('change', 'unlink', filePath);
+    })
+    .on('error', (error) => {
+      console.error('Error occurred:', error);
+    });
 });
 
 app.get("/", (req, res) => {
